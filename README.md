@@ -28,4 +28,9 @@ utility(많은 기능을 가진) css
 
    - rem 단위이며 마우스를 대보면 px을 알 수 있다.
 
-2.
+2. 새로운 css property를 제공해 주고 이용할 수 있다.
+   간단하더라도 귀찮거나 계산이 필요한 기능들을 이용이 가능하다.
+
+   - ex) `aspect-ratio` , `space-x-5` ...
+
+3. modifiers
