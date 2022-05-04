@@ -34,3 +34,23 @@ utility(많은 기능을 가진) css
    - ex) `aspect-ratio` , `space-x-5` ...
 
 3. modifiers
+
+   - https://tailwindcss.com/docs/hover-focus-and-other-states#quick-reference
+   - css event와 같은 hover, active 등등을 실행시켜줌
+
+   - 스타일을 적용하기 위해서 css varibale과 함수를 사용하는데 이때 하나의 className이 여러가지를 사용할때 그 설정을 어느 정도까지 커스터마이징이 가능한지 알 수 있고 커스터마이징이 가능하다면 그 스타일 변수가 가지고 있는 이름 하나하나에 modifier를 사용할 필요가 없다.
+     어떤 css가 어떤 변수들을 가지고 있는지는 마우스를 위로 올려보면 알 수 있다.
+
+   ex)
+
+   ```
+   <div className="focus:ring-2 ring-offset-4 ">HI!</div>
+   ```
+
+   🤔 ring 안에는 ring-offset을 변수로 가지고 있기 때문에 focus를 ring에게만 줘도 offset도 적용된다.
+
+4. ring utility
+
+   - https://tailwindcss.com/docs/ring-color
+   - ring-숫자 = 상자 그림자 윤곽선을 만드는데 그 두께를 적용함
+   - ring-offset-숫자 = 윤곽선과 내용물의 사이 거리
