@@ -52,5 +52,24 @@ utility(많은 기능을 가진) css
 4. ring utility
 
    - https://tailwindcss.com/docs/ring-color
-   - ring-숫자 = 상자 그림자 윤곽선을 만드는데 그 두께를 적용함
-   - ring-offset-숫자 = 윤곽선과 내용물의 사이 거리
+   - `ring-숫자` = 상자 그림자 윤곽선을 만드는데 그 두께를 적용함
+   - `ring-offset-숫자` = 윤곽선과 내용물의 사이 거리
+
+5. group
+
+   - 상위(부모) 상태를 기반으로 한 스타일 지정
+   - 부모의 상태를 기반으로 스타일이 바뀔때 `group-동작` 을 통해 대상 요소의 스타일을 설정한다.
+
+   ex)
+
+   ```
+   <div className="group">
+      <div className="group-hover:bg-white">1</div>
+   </div>
+   ```
+
+6. peer
+
+   - https://tailwindcss.com/docs/hover-focus-and-other-states#styling-based-on-sibling-state
+   - ⭐️ peer는 가장 위에 올라와 있어야한다.
+   - 동일한 위치(형제)에 있을 경우 스타일을 조작하기 위해 사용한다.
