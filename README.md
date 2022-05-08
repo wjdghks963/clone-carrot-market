@@ -24,9 +24,23 @@ utility(많은 기능을 가진) css
 
 `command + i`로 자동완성을 띄울 수 있다.
 
+> 반응형 디자인에 대해
+
+보통 컴퓨터부터 css작업을 시작하지만 tailwind는 모바일을 우선적으로 생각한다.
+모든 className은 모바일에 우선 적용되고 그 다음에 큰 화면들을 위한 선택자가 존재한다.
+
+`sm`, `md`, `xl` ... 같은 modifier를 이용해서 반응형을 적용시킨다.
+
+반응형 modifier들은 다음 modifier들에 의해 정지돼야한다.(하나의 선택자에는 end-point가 존재하지 않기때문에 그 끝을 정해주는 것은 다음 modifier이다.)
+ex) sm를 사용하고 md를 사용하지 않으면 sm이 가진 속성인 640px 넘어가는 순간부터 상한선이 없이 계속 늘어나는 화면에 sm에 적용된 스타일이 계속 적용된다.
+
+<br/>
+
+<hr/>
+
 1. 스타일의 뒤 숫자는 px 단위가 아니다.
 
-   - rem 단위이며 마우스를 대보면 px을 알 수 있다.
+- rem 단위이며 마우스를 대보면 px을 알 수 있다.
 
 2. 새로운 css property를 제공해 주고 이용할 수 있다.
    간단하더라도 귀찮거나 계산이 필요한 기능들을 이용이 가능하다.
@@ -41,6 +55,9 @@ utility(많은 기능을 가진) css
    - 스타일을 적용하기 위해서 css varibale과 함수를 사용하는데 이때 하나의 className이 여러가지를 사용할때 그 설정을 어느 정도까지 커스터마이징이 가능한지 알 수 있고 커스터마이징이 가능하다면 그 스타일 변수가 가지고 있는 이름 하나하나에 modifier를 사용할 필요가 없다.
      어떤 css가 어떤 변수들을 가지고 있는지는 마우스를 위로 올려보면 알 수 있다.
 
+   - 두개 이상의 modifier나 selector를 사용하고 싶다면 중첩한다.
+     `file:hover:~~~`
+
    ex)
 
    ```
@@ -49,11 +66,15 @@ utility(많은 기능을 가진) css
 
    🤔 ring 안에는 ring-offset을 변수로 가지고 있기 때문에 focus를 ring에게만 줘도 offset도 적용된다.
 
-4. ring utility
+   1. ring utility
 
    - https://tailwindcss.com/docs/ring-color
    - `ring-숫자` = 상자 그림자 윤곽선을 만드는데 그 두께를 적용함
    - `ring-offset-숫자` = 윤곽선과 내용물의 사이 거리
+
+4. selector
+   말 그대로 selector 역핧을 맡는다. 하지만 더 세세하게 잡아낼 수 있다.
+   예를 들면 input file 안에 있는 파일 선택 버튼을 잡아낸다던가(file:) span의 첫번째 글자를 잡아낸다던가(first-letter:)..
 
 5. group
 
