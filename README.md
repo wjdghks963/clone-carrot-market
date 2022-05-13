@@ -94,3 +94,37 @@ ex) sm를 사용하고 md를 사용하지 않으면 sm이 가진 속성인 640px
    - https://tailwindcss.com/docs/hover-focus-and-other-states#styling-based-on-sibling-state
    - ⭐️ peer는 가장 위에 올라와 있어야한다.
    - 동일한 위치(형제)에 있을 경우 스타일을 조작하기 위해 사용한다.
+
+7. darkMode
+
+   - dark 모드가 활성화되어 있을 때 사이트의 스타일을 다르게 지정할 수 있다. 현재 사용중인 컴퓨터의 설정(다크모드, 라이트모드, 오토 같은 운영체제)에 따라 자동으로 적용된다.
+     https://tailwindcss.com/docs/dark-mode
+
+   - 수동 다크 모드 전환
+     defualt로 tailwind는 컴퓨터의 설정을 따라가는데 `tailwind.config.js`의 property인 `darkMode`를 `class`로 설정한다면 상위 부모의 className에 따라 다크모드를 적용할 수 있다.
+
+     1. 부모 컴포넌트에 `dark`라는 className을 추가한다면 자식에서 `dark:bg-black`같은 modifier를 사용한다면 다크모드일 때 어떤식으로 스타일이 되는지 정할 수 있다.
+     2. class를 통한 다크모드는 html 태그를 조작하는 것으로 다크모드 버튼과 같은 것을 만들어서 사용할 수 있다.
+
+8. Just In Compiler (JIT)
+
+   Tailwind CSS v3.0 이전: 거대한 CSS파일을 생성하고, 그 파일에 이미 정의해놓은 클래스들을 가져와 사용하는 방식.
+   대략 20만줄 정도 되는 클래스로 가득찬 파일을 가져와 개발 단계에서 사용하기 때문에 매우 무겁고, 배포 전에는 purge를 해줘야 해서 번거로움
+
+   Tailwind CSS v3.0이후: 사용자가 사용하는 스타일들만 그때 그때 생성해서 사용하는 방식. 여러 클래스들을 조합해서 사용할 수 있고, 매우 가볍고, 배포 전 purge를 해주지 않아도 되서 편함
+
+   이것 덕분에 더 이상 tailwind에서 제공해주지 않는 스타일들을 inline스타일을 이용하지 않아도 된다.
+
+   ex) 만약에 내가 fontsize를 300px를 주고 싶다.
+
+   옛날
+
+   ```
+   <div style={{fontSzie:300}}>안녕하세요</div>
+   ```
+
+   지금
+
+   ```
+   <div className="text-[300px]">안녕하세요</div>
+   ```
