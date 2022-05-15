@@ -128,3 +128,16 @@ ex) sm를 사용하고 md를 사용하지 않으면 sm이 가진 속성인 640px
    ```
    <div className="text-[300px]">안녕하세요</div>
    ```
+
+<hr/>
+
+## tailwind practice
+
+### plugins
+
+재사용 가능한 타사 플러그인으로 Tailwind 플러그인을 사용하면 CSS 대신 JavaScript를 사용하여 사용자의 스타일시트에 삽입할 Tailwind에 대한 새 스타일을 등록할 수 있다.
+https://tailwindcss.com/docs/plugins
+
+### form skills
+
+input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소를 통해 input을 표현할 수 있다.
