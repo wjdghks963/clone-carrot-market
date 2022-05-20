@@ -95,7 +95,13 @@ ex) sm를 사용하고 md를 사용하지 않으면 sm이 가진 속성인 640px
    - ⭐️ peer는 가장 위에 올라와 있어야한다.
    - 동일한 위치(형제)에 있을 경우 스타일을 조작하기 위해 사용한다.
 
-7. darkMode
+7. divide-(x|y)-width
+
+   - element사이 border를 제어하기 위한 유틸, 자동적으로 처음과 마지막의 요소엔 아래와 위가 없다.
+   - x : element의 양옆의 border
+   - y : element의 아래위의 border
+
+8. darkMode
 
    - dark 모드가 활성화되어 있을 때 사이트의 스타일을 다르게 지정할 수 있다. 현재 사용중인 컴퓨터의 설정(다크모드, 라이트모드, 오토 같은 운영체제)에 따라 자동으로 적용된다.
      https://tailwindcss.com/docs/dark-mode
@@ -106,7 +112,7 @@ ex) sm를 사용하고 md를 사용하지 않으면 sm이 가진 속성인 640px
      1. 부모 컴포넌트에 `dark`라는 className을 추가한다면 자식에서 `dark:bg-black`같은 modifier를 사용한다면 다크모드일 때 어떤식으로 스타일이 되는지 정할 수 있다.
      2. class를 통한 다크모드는 html 태그를 조작하는 것으로 다크모드 버튼과 같은 것을 만들어서 사용할 수 있다.
 
-8. Just In Compiler (JIT)
+9. Just In Compiler (JIT)
 
    Tailwind CSS v3.0 이전: 거대한 CSS파일을 생성하고, 그 파일에 이미 정의해놓은 클래스들을 가져와 사용하는 방식.
    대략 20만줄 정도 되는 클래스로 가득찬 파일을 가져와 개발 단계에서 사용하기 때문에 매우 무겁고, 배포 전에는 purge를 해줘야 해서 번거로움

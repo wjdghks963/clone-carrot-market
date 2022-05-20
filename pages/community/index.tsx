@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 
 const Community: NextPage = () => {
   return (
-    <div className="space-y-8 px-4 py-16">
+    <div className="space-y-8 px-4 py-10">
       {[1, 2, 3, 4, 5].map((_, i) => (
         <div key={i} className="flex cursor-pointer flex-col items-start">
           <span className="text-sx flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 font-medium text-gray-800">
