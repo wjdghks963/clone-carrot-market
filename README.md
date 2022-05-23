@@ -137,8 +137,6 @@ ex) sm를 사용하고 md를 사용하지 않으면 sm이 가진 속성인 640px
 
 <hr/>
 
-## tailwind practice
-
 ### plugins
 
 재사용 가능한 타사 플러그인으로 Tailwind 플러그인을 사용하면 CSS 대신 JavaScript를 사용하여 사용자의 스타일시트에 삽입할 Tailwind에 대한 새 스타일을 등록할 수 있다.
@@ -147,3 +145,32 @@ https://tailwindcss.com/docs/plugins
 ### form skills
 
 input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소를 통해 input을 표현할 수 있다.
+
+<br/>
+<br/>
+
+<hr/>
+<hr/>
+<br/>
+
+# Prisma
+
+1. Node.js and Typescript ORM(Object Relational Mapping)
+   => JS or TS 와 데이터베이스가 소통할 수 있게 해주는 도구(번역기)
+
+2. Prisma를 사용하기 위해서는 먼저 Prisma에게 DB가 어떻게 생겼는지, 데이터의 모양을 설명해줘야하기 때문에 `schema.prisma`를 사용한다.
+
+```
+model Post{
+   id Int @id @default(autoincreament())
+   title String
+   content String
+}
+```
+
+3. Prisma가 이런 타입에 관한 정보를 알고 있으면 client를 생성해줄 수 있다.
+   client를 이용하면 TS로 DB와 직접 상호작용 가능, 자동완성 제공한다.
+
+   sql문을 사용하지 않고 DB를 Object와 같이 간단하게 조작할 수 있다.
+
+4. Prisma Studio : Visual Database Browser, DB를 위한 관리자 패널
