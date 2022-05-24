@@ -160,17 +160,31 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
 
 2. Prisma를 사용하기 위해서는 먼저 Prisma에게 DB가 어떻게 생겼는지, 데이터의 모양을 설명해줘야하기 때문에 `schema.prisma`를 사용한다.
 
-```
-model Post{
-   id Int @id @default(autoincreament())
-   title String
-   content String
-}
-```
-
 3. Prisma가 이런 타입에 관한 정보를 알고 있으면 client를 생성해줄 수 있다.
    client를 이용하면 TS로 DB와 직접 상호작용 가능, 자동완성 제공한다.
 
    sql문을 사용하지 않고 DB를 Object와 같이 간단하게 조작할 수 있다.
 
 4. Prisma Studio : Visual Database Browser, DB를 위한 관리자 패널
+
+## 설치와 사용
+
+1. `npm i prisma -D`
+
+2. `npx prisma init`
+   이 명령은 prisma라는 새 디렉토리 안에 schema.prisma라는 파일과 프로젝트 루트에 .env 파일을 생성한다.
+   schema.prisma는 데이터베이스 연결과 Prisma Client 생성기가 있는 Prisma 스키마를 포함한다.
+   .env는 환경 변수를 정의하기 위한 dotenv 파일 (데이터베이스 연결에 사용됨)
+
+   https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases-typescript-mysql
+
+   Prisma Model 예시
+   https://www.prisma.io/docs/concepts/components/prisma-schema
+
+   ```
+   model Post{
+      id Int @id @default(autoincreament())
+      title String
+      content String
+   }
+   ```
