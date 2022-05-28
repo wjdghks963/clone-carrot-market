@@ -188,3 +188,72 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
       content String
    }
    ```
+
+<br/>
+
+# PlanetScale
+
+1. MySQL과 호환되는 serverless DB platform으로 AWS RDS와는 다르다.
+
+2. Vitess
+   Vitess는 MySQL을 스케일링하기 위한 데이터베이스 클러스터링 시스템
+   인터넷에서 가장 큰 사이트를 호스팅하는 강력한 오픈 소스 기술
+   https://vitess.io/
+
+   1. Vitess를 사용하는 이유
+      1. 수평 스케일
+      2. 고가용성 (Vitess의 기본 복제본 구성은 예기치 않은 이벤트가 발생할 때 기본에서 복제본으로 원활한 장애 조치를 허용)
+      3. MySQL 호환
+      4. 쿠버네티스 네이티브
+      5. 구체화된 뷰
+      6. 온라인 스키마 마이그레이션
+
+3. 간단한 DB연결
+
+   1. DB 생성
+      `pscale database create DB이름 --region 지역(ex: ap-northeast)`
+
+   2. DB서버를 연결시킨다(킨다).
+      `pscale connect DB이름`
+
+   3. DB연결을 위해 .env에 DATABASE_URL 설정
+      .env에 서버를 연결시킨 후 나온 IP주소(IPv4)를 추가한다.
+
+   4. prisma가 .env를 통해 연결하기 위해 사용하는 DATABASE_URL
+      `DATABASE_URL="mysql://IP주소/DB이름"`
+
+   5. DB의 스키마를 바꾼다면 push를 통해 pscale에게 알려준다.
+      `npx prisma db push`
+
+4. Referential integrity (참조 무결성)
+
+   1. vitess는 mysql과 다른 것이기 때문에 참조 무결성을 지키지 않는다.
+
+   2. 따라서 prima의 도움을 받아 관계형 데이터 베이스를 사용할 수 있게 도와준다.
+
+   3. `schema.prisma` 설정
+
+      1. client에 `previewFeatures` 설정을 추가해 관계형을 사용하고 싶다고 알려준다.
+
+      ```
+      generator client {
+      provider = "prisma-client-js"
+      previewFeatures = ["referentialIntegrity"]
+      }
+      ```
+
+      2. db에 prisma가 `referentialIntegrity`를 도와줄거라 한다.
+
+      ```
+      datasource db {
+      provider = "mysql"
+      url      = env("DATABASE_URL")
+      referentialIntegrity = "prisma"
+      }
+      ```
+
+## CLI 설치
+
+1. `brew install planetscale/tap/pscale`
+2. `brew install mysql-client`  
+   mysql을 사용하기 때문에 mysql cli도 설치함
