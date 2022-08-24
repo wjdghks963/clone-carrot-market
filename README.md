@@ -255,5 +255,21 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
 ## CLI 설치
 
 1. `brew install planetscale/tap/pscale`
+
 2. `brew install mysql-client`  
    mysql을 사용하기 때문에 mysql cli도 설치함
+
+
+
+## CLI 사용 & 원하는 region에 DB 생성과 연결
+
+1. `pscale auth login`을 사용해 먼저 cli에 로그인한다.
+
+2. pscale 이 가진 api를 사용해서 cli를 사용한다.
+
+3. DB 생성
+`pscale database create DBname --region 원하는region`
+커맨드로 원하는 region에 DB 생성이 가능하다.
+
+4. DB 연결
+`pscale connect DBname`를 사용한다면 보안 터널인 url이 하나 생성되는데 이것은 내 컴퓨터와 planetscale을 연결하는 것이다. 이것으로 일반적으로 db를 관리하는 사용자 id,password를 관리해야할 필요없이 url하나로 연결이 가능하다.
