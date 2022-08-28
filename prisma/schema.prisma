@@ -12,7 +12,7 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
-model User{
+model User {
   id Int @id @default(autoincrement())
   phone Int? @unique
   email String? @unique

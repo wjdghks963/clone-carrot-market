@@ -166,6 +166,7 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
    sql문을 사용하지 않고 DB를 Object와 같이 간단하게 조작할 수 있다.
 
 4. Prisma Studio : Visual Database Browser, DB를 위한 관리자 패널
+   `npx prisma studio`를 통해 시작 가능
 
 ## 설치와 사용
 
@@ -188,6 +189,8 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
       content String
    }
    ```
+
+3. prisma를 controll이 가능한 client파일은 브라우저(프론트엔드)에서 사용을 하면 절대절대 안된다.
 
 <br/>
 
