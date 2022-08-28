@@ -168,6 +168,8 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
 4. Prisma Studio : Visual Database Browser, DB를 위한 관리자 패널
    `npx prisma studio`를 통해 시작 가능
 
+5. Prisma Client를 사용해서 생성되어 있는 스키마에서 데이터를 controll이 가능하게 해주는 쿼리 빌더이다.
+
 ## 설치와 사용
 
 1. `npm i prisma -D`
@@ -190,7 +192,10 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
    }
    ```
 
-3. prisma를 controll이 가능한 client파일은 브라우저(프론트엔드)에서 사용을 하면 절대절대 안된다.
+3. `npx prisma generate`
+   schema.prisma에서 스키마를 생성하고 해당 명령어를 입력한다면 node_modules에 client파일이 생성되는데 이 안에는 프로젝트 안에서 생성한 스키마가 타입스크립트 타입으로 생성되어있다.
+
+4. prisma를 controll이 가능한 client파일은 브라우저(프론트엔드)에서 사용을 하면 절대절대 안된다.
 
 <br/>
 
@@ -270,3 +275,14 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
 1. `pscale auth login`을 사용해 먼저 cli에 로그인한다.
 
 2. pscale 이 가진 api를 사용해서 cli를 사용한다.
+
+<hr/>
+<br/>
+<br/>
+<br/>
+
+# Next.js의 API routes
+
+page 폴더 안에 api라는 폴더를 생성한다.
+
+간단하게 api를 만들 수 있다. 후술.
