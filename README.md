@@ -194,6 +194,7 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
 
 3. `npx prisma generate`
    schema.prisma에서 스키마를 생성하고 해당 명령어를 입력한다면 node_modules에 client파일이 생성되는데 이 안에는 프로젝트 안에서 생성한 스키마가 타입스크립트 타입으로 생성되어있다.
+   이 파일을 이용해 prisma client를 사용할 때 미리완성과 같은 기능을 사용해 도움을 받을 수 있다.
 
 4. prisma를 controll이 가능한 client파일은 브라우저(프론트엔드)에서 사용을 하면 절대절대 안된다.
 
@@ -286,3 +287,37 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
 page 폴더 안에 api라는 폴더를 생성한다.
 
 간단하게 api를 만들 수 있다. 후술.
+
+# React Hook Form
+
+react의 라이브러리로 일반 react에서는 구현하기 귀찮은 form을 라이브러리를 통해 빠르고 많은 기능을 처리한다.
+
+## register
+
+```
+const {register, handleSubmit } = useForm();
+
+const onValid = () => {
+   conosole.log("valid")
+}
+
+<form onSubmit={handleSubmit(onValid)}>
+   <input {..register("username")} type="text" required/>
+</form>
+```
+
+input에 unique한 이름을 key로 붙여주는 것으로 useForm에 있는 기능 사용이 가능하다.
+register안에 html과 라이브러리에 존재하는 속성들을 구분해서 줄 수 있다.
+ex)
+
+```
+<input {..register("username", {required : true})} type="text" />
+```
+
+## validate
+
+value나 html의 속성을 이용해서 validate를 설정하고 에러를 설정할 수 있다.
+
+```
+<input {..register("username", {required : "username required"})} type="text" />
+```
