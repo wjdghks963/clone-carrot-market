@@ -282,12 +282,6 @@ input안에 label 태그를 넣은 후 input을 숨기면 label에 있는 요소
 <br/>
 <br/>
 
-# Next.js의 API routes
-
-page 폴더 안에 api라는 폴더를 생성한다.
-
-간단하게 api를 만들 수 있다. 후술.
-
 # React Hook Form
 
 react의 라이브러리로 일반 react에서는 구현하기 귀찮은 form을 라이브러리를 통해 빠르고 많은 기능을 처리한다.
@@ -320,4 +314,46 @@ value나 html의 속성을 이용해서 validate를 설정하고 에러를 설�
 
 ```
 <input {..register("username", {required : "username required"})} type="text" />
+```
+
+# Next.js의 API routes
+
+page 폴더 안에 api라는 폴더를 생성하는 것으로 간단하게 파일 경로를 api로 만들 수 있다.
+
+node에서와 같이 함수 안에서 req,res를 매개변수로 가진 함수를 만들어서 export 한다면 해당 함수를 api로 사용이 가능하다.
+next는 api의 파일 안에서는 return 하는 함수를 사용하기 때문에 **사용할 함수를 return하는 작업**이 꼭 필요하다.
+
+```javascript
+// api/enter
+
+import { NextApiRequest, NextApiResponse } from "next";
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  console.log(req.body);
+  res.json({ ok: true });
+}
+```
+
+# tsconfig.json에서 path 깔끔하게 설정하기
+
+import할 때 `../../../~~~`이 더러워 보인다면 tsconfig에서 설정을 통해 깔끔하게 바꿀 수 있다.
+
+```
+{
+  "compilerOptions": {
+   ...,
+   // 기준이 되는 url은 이 파일이 존재하는 곳으로
+    "baseUrl": ".",
+    "paths": {
+      // "내가 사용할 path 이름" : ["resource가 존재하는 url"]
+      "@libs/*": ["libs/*"],
+      "@components/*": ["components/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
 ```
