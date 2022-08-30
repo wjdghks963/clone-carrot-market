@@ -27,6 +27,7 @@ const Enter: NextPage = () => {
     setMethod("phone");
   };
   const onValid = (data: EnterForm) => {
+    if (loading) return;
     enter(data);
   };
 
