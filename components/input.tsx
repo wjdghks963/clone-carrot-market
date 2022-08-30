@@ -42,10 +42,10 @@ export default function Input({
             <span className="text-sm text-gray-500">$</span>
           </div>
           <input
+            required={required}
             id={name}
             {...register}
             type={type}
-            required={required}
             className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pl-7 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
           />
           <div className="pointer-events-none absolute right-0 flex items-center pr-3">
