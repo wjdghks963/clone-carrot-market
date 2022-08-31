@@ -2,6 +2,10 @@ import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import twilio from "twilio";
+import mail from "@sendgrid/mail";
+
+// saendgrid email api 등록
+mail.setApiKey(process.env.EMAIL_API_KEY!);
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
@@ -32,6 +36,14 @@ async function handler(
       messagingServiceSid: process.env.TWILIO_MSID,
       to: process.env.MY_PHONE!,
       body: `Login Token ${payload}`,
+    });
+  } else if (email) {
+    const email = await mail.send({
+      from: "chsw000@gmail.com",
+      to: "chsw000@gmail.com",
+      subject: "Carrot Market Verification Email",
+      text: `TOKEN ${payload}`,
+      html: `<strong>TOKEN ${payload}</strong>`,
     });
   }
   return res.json({
