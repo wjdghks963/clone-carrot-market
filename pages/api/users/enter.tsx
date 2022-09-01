@@ -32,19 +32,19 @@ async function handler(
   });
   // 만약 폰이라면 twilio를 통해 메시지를 보낸다.
   if (phone) {
-    await twilioClient.messages.create({
-      messagingServiceSid: process.env.TWILIO_MSID,
-      to: process.env.MY_PHONE!,
-      body: `Login Token ${payload}`,
-    });
+    // await twilioClient.messages.create({
+    //   messagingServiceSid: process.env.TWILIO_MSID,
+    //   to: process.env.MY_PHONE!,
+    //   body: `Login Token ${payload}`,
+    // });
   } else if (email) {
-    const email = await mail.send({
-      from: "chsw000@gmail.com",
-      to: "chsw000@gmail.com",
-      subject: "Carrot Market Verification Email",
-      text: `TOKEN ${payload}`,
-      html: `<strong>TOKEN ${payload}</strong>`,
-    });
+    // const email = await mail.send({
+    //   from: "chsw000@gmail.com",
+    //   to: "chsw000@gmail.com",
+    //   subject: "Carrot Market Verification Email",
+    //   text: `TOKEN ${payload}`,
+    //   html: `<strong>Your token is ${payload}</strong>`,
+    // });
   }
   return res.json({
     ok: true,

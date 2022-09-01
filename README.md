@@ -377,3 +377,21 @@ import할 때 `../../../~~~`이 더러워 보인다면 tsconfig에서 설정을 
   "exclude": ["node_modules"]
 }
 ```
+
+# env
+
+API Key와 같은 문자열이 필요할때 변수에다 저장하고 사용해야 편리하고 가독성이 좋아진다.
+그 문자열들을 관리하는 환경변수 파일인데 이것은 안전히 보관되야하는 key들이 들어있는 파일이기때문에 git에 올라가면 안된다.
+
+next에서는 따로 npm 패키지를 다운해서 사용할 필요가 없다.
+
+만약 gitignore에 파일이름을 올렸는데도 git에 포함되어 올라간다면
+file이 존재하는 경로에서 git에서 cache된 env를 삭제한다.
+
+```bash
+git rm .env --cached
+
+git add .
+git commit -m "delete env file cached git"
+git push
+```
