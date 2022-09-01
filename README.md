@@ -219,6 +219,7 @@ const user = await client.user.upsert({
 ```
 
 <br/>
+<hr/>
 
 # PlanetScale
 
@@ -357,7 +358,44 @@ export default async function handler(
 }
 ```
 
-# tsconfig.json에서 path 깔끔하게 설정하기
+# auth 로직
+
+[Session ? Token ? Cookie ?](https://www.youtube.com/watch?v=tosLBcAX1vk)
+
+id --> encrypt --> 암호화된 쿠키를 보냄 --> decrypt --> 복호화된 쿠키로 인증
+
+로그인에서 JWT Session 차이
+
+### JWT
+
+유저의 정보(ex: id)에 사인 알고리즘을 이용해 서명한 후에 그 사인된 정보를 string 형태로 전달한다.
+서버에 요청을 보낼때 session id와 비슷하게 token 아니면 사인된 정보를 보내야한다.
+token을 보낸다면 서버에 존재하는 사인을 통해 비교를 한 후에 유효하다면 인증이 완료된다.
+
+이 토큰은 암호화된것이 아니며 누구나 열어서 정보를 볼 수 있기때문에 보안이 중요하다.
+
+### Session
+
+session id 만 보내면 끝나지만 서버에 존재하는 session DB에서 정보를 계속 찾아야하기 때문에 DB의 용량에 성능이 차이난다.
+
+## 이용한 것
+
+[iron session](https://github.com/vvo/iron-session)을 이용한다.
+
+데이터를 저장하기 위해 서명되고 암호화된 쿠키를 사용하는 nodejs의 session 유틸리티이다.
+
+- 서명, 암호화된 쿠키를 사용하는 nodejs stateless 세션 도구
+- JWT는 암호화되지 않고 서명이 되어있음
+- 유저가 안에 있는 정보를 볼 수 없음
+- 세션을 위한 백엔드 구축이 필요 없음
+
+`npm i iron session`
+
+<br/>
+
+# 짧은 tips
+
+## tsconfig.json에서 path 깔끔하게 설정하기
 
 import할 때 `../../../~~~`이 더러워 보인다면 tsconfig에서 설정을 통해 깔끔하게 바꿀 수 있다.
 
@@ -378,7 +416,23 @@ import할 때 `../../../~~~`이 더러워 보인다면 tsconfig에서 설정을 
 }
 ```
 
-# env
+## modlue package에 type 지정하기
+
+이것은 패키지 안에 내가 설정한 변수가 들어가서 만약 ts가 불평을 한다면 사용할때 유용하다.
+
+```javascript
+// iron-session의 타입을 정의할 것이다.
+declare module "iron-session" {
+  interface IronSessionData {
+   // 안에서 사용하는 user의 값이 nullable이고 안에는 id가 있다고 알려준다.
+    user?: {
+      id: number;
+    };
+  }
+}
+```
+
+## env
 
 API Key와 같은 문자열이 필요할때 변수에다 저장하고 사용해야 편리하고 가독성이 좋아진다.
 그 문자열들을 관리하는 환경변수 파일인데 이것은 안전히 보관되야하는 key들이 들어있는 파일이기때문에 git에 올라가면 안된다.

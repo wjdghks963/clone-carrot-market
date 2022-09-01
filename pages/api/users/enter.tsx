@@ -17,7 +17,7 @@ async function handler(
   // payload를 완전한 랜덤 문자열로 만든다.
   const payload = Math.floor(10000 + Math.random() * 900000) + "";
   // 유저가 지금 폰인지 이메일인지 확인
-  const user = phone ? { phone: +phone } : email ? { email } : null;
+  const user = phone ? { phone } : email ? { email } : null;
   if (!user) return res.status(400).json({ ok: false });
   const token = await client.token.create({
     data: {
