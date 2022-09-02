@@ -377,6 +377,7 @@ export default async function handler(
 
 5. 만약 로그인을 하기 위해서 클라이언트에서 토큰을 계속 생성된다면?
    > 화면을 전환하기 때문에 인증을 반복하며 토큰을 계속 생성하게 될 가능성은 낮다.
+   > 민약 고친다면 prisma upsert를 이용해서 token의 payload만 업데이트 한다.
 
 <br/>
 
@@ -410,6 +411,50 @@ session id 만 보내면 끝나지만 서버에 존재하는 session DB에서 �
 - 세션을 위한 백엔드 구축이 필요 없음
 
 `npm i iron session`
+
+<br/>
+
+# SWR
+
+데이터 fetching을 위한 React Hooks
+SWR은 먼저 **캐시(스태일)로부터 데이터를 반환한 후,** fetch 요청(재검증)을 하고, 최종적으로 최신화된 데이터를 가져온다.
+SWR을 사용하면 컴포넌트는 지속적이며 자동으로 데이터 업데이트 스트림을 받게 되며 UI는 항상 빠르고 반응적이다.
+
+ex) client가 home에 간다면 api를 통해 유저의 정보를 받아온다. 후에 다시 api를 통한 유저의 정보가 필요하다면 api를 통해 무조건 다시 서버를 왕복하는 것이 아니라 background에서 api 통신을 마친 후에 이미 cache에 존재하는 데이터를 보고 만약 데이터가 다르다면 cache에 저장하고 만약 똑같다면 아무것도 하지 않고 cache에 존재하는 데이터를 보내준다.
+
+## useSWR()
+
+두개의 인자를 받는다.
+`useSWR(url:string, fetcher)`
+첫번째 인자는 데이터를 받아올 url이기도 하지만 cache의 사용여부에 대한 data의 key값이기도 하다.
+
+swr에는 super cache라는게 존재한다.
+
+```javascript
+super_cache = {
+  url: {
+    ok: true,
+    data: { id: 11, name: "choi", age: 27 },
+  },
+};
+```
+
+## SWRConfig
+
+context SWRConfig는 모든 SWR hook에 대한 global configuration을 제공한다.
+
+```javascript
+// value 안에 fetcher을 설정했기때문에 다른 컴포넌트안에서 useSWR을 사용할때 fetcher가 자동적으로 여기서 설정한 fetcher로 들어간다.
+<SWRConfig
+  value={{
+    fetcher: (url: string) => fetch(url).then((response) => response.json()),
+  }}
+>
+  <div className="mx-auto w-full max-w-xl">
+    <Component {...pageProps} />
+  </div>
+</SWRConfig>
+```
 
 <br/>
 
@@ -469,3 +514,15 @@ git add .
 git commit -m "delete env file cached git"
 git push
 ```
+
+## useRouter
+
+push와 replace의 차이점
+
+1. `push`
+
+이전 페이지의 히스토리가 남는다
+
+2. `replace`
+
+이전 페이지의 히스토리가 남지 않는다.
