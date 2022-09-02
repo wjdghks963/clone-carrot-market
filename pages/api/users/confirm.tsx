@@ -15,10 +15,10 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const { token } = req.body;
+  const { tokenPayLoad } = req.body;
   const foundToken = await client.token.findUnique({
     where: {
-      payload: token,
+      payload: tokenPayLoad,
     },
   });
   if (!foundToken) return res.status(400).end();

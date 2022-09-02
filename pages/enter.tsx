@@ -13,7 +13,7 @@ interface EnterForm {
 }
 
 interface TokenForm {
-  token: string;
+  tokenPayLoad: string;
 }
 interface MutationResult {
   ok: boolean;
@@ -66,7 +66,7 @@ const Enter: NextPage = () => {
             onSubmit={tokenHandleSubmit(onTokenValid)}
           >
             <Input
-              register={tokenRegister("token", { required: true })}
+              register={tokenRegister("tokenPayLoad", { required: true })}
               name="token"
               label="Confirmation Token"
               type="number"

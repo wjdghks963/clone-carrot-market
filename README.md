@@ -218,6 +218,10 @@ const user = await client.user.upsert({
 });
 ```
 
+### NextAuth
+
+마법
+
 <br/>
 <hr/>
 
@@ -359,6 +363,22 @@ export default async function handler(
 ```
 
 # auth 로직
+
+1. enter에서 payload 및 payload가 담긴 token 생성 후 계정에 연결
+   이 과정은 회원가입을 포함한다.
+
+   - 만약 계정이나 폰넘버가 DB에 존재하지 않는다면 생성한 후에 token을 생성한다.
+
+2. 로그인을 하기 위한 랜덤하고 유니크한 payload가 생성된 후 토큰을 만들었다면 메일이나 폰으로 생성된 payload값을 전달한다.
+
+3. 메일이나 메시지가 전달이 되었다면 form 화면을 전환한 후에 전달받은 payload값을 body에 담아보낸다.
+
+4. payload가 담긴 토큰을 DB에서 찾은 후에 만약 존재한다면 해당 계정에 쌓인 token을 전부 삭제한 후 로그인을 완료시킨다.
+
+5. 만약 로그인을 하기 위해서 클라이언트에서 토큰을 계속 생성된다면?
+   > 화면을 전환하기 때문에 인증을 반복하며 토큰을 계속 생성하게 될 가능성은 낮다.
+
+<br/>
 
 [Session ? Token ? Cookie ?](https://www.youtube.com/watch?v=tosLBcAX1vk)
 
