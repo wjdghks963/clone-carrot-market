@@ -424,9 +424,9 @@ ex) client가 home에 간다면 api를 통해 유저의 정보를 받아온다. 
 
 ## useSWR()
 
-두개의 인자를 받는다.
-`useSWR(url:string, fetcher)`
-첫번째 인자는 데이터를 받아올 url이기도 하지만 cache의 사용여부에 대한 data의 key값이기도 하다.
+1. 두개의 인자를 받는다.
+   `useSWR(url:string, fetcher)`
+   첫번째 인자는 데이터를 받아올 url이기도 하지만 cache의 사용여부에 대한 data의 key값이기도 하다.
 
 swr에는 super cache라는게 존재한다.
 
@@ -438,6 +438,35 @@ super_cache = {
   },
 };
 ```
+
+2. hook 안의 결과값에는 data 와 mutate가 있다.
+
+https://swr.vercel.app/ko/docs/mutation
+
+data는 우리가 fetch 한 결과값이고 mutate는 cache된 데이터를 mutate(조건부로 새로운 데이터를 파생)하기 위한 함수이다.
+
+mutation은 바뀌는 데이터를 기준으로 ui의 업데이트까지 해준다.
+
+```javascript
+// 첫번째 매개변수 : 캐시에 있는 데이터 대신 사용할 새로운 데이터
+// 두번재 매개변수 : 서버를 다시 들리는 revaildation 여부
+mutate({ data }, boolean);
+```
+
+mutate에는 두가지 종류가 있다.
+
+1. bound
+   같은 `useSWR`의 결과값을 이용해서 받은 data만 조작할 수 있다.
+
+2. unbound
+   캐시할 데이터를 포함할 필요없이 key값으로 url만 보내준다면 해당 url에 존재하는 캐시의 데이터를 다른 컴포넌트에서 조작할 수 있다.
+   ```javascript
+   const { mutate } = useSWRConfig();
+   1. 만약 표현해줄 데이터가 필요하다면
+   mutate("/api/users/me", (prev) => ({ ok: !prev.ok }), false);
+   2. 그냥 fetch를 다시 하고 싶다면
+   mutate("/api/users/me")
+   ```
 
 ## SWRConfig
 
