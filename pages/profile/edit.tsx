@@ -1,3 +1,4 @@
+import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
 import type { NextPage } from "next";
 import { useEffect } from "react";
@@ -9,7 +10,13 @@ import Layout from "../../components/layout";
 interface EditProfileForm {
   email?: string;
   phone?: string;
+  name?: string;
   formErrors?: string;
+}
+
+interface EditProfileResponse {
+  ok: boolean;
+  error?: string;
 }
 
 const EditProfile: NextPage = () => {
@@ -21,17 +28,30 @@ const EditProfile: NextPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<EditProfileForm>();
-  useEffect(() => {
-    if (user?.email) setValue("email", user.email);
-    if (user?.phone) setValue("phone", user.phone);
-  }, [setValue, user]);
-  const onValid = ({ email, phone }: EditProfileForm) => {
-    if (email === "" && phone === "") {
+  const [editProfile, { data, loading }] =
+    useMutation<EditProfileResponse>(`/api/users/me`);
+
+  const onValid = ({ email, phone, name }: EditProfileForm) => {
+    if (loading) return;
+    if (email === "" && phone === "" && name === "") {
       setError("formErrors", {
         message: "이메일이나 핸드폰 중 하나가 꼭 필요합니다.",
       });
     }
+    editProfile({ email, phone, name });
   };
+
+  useEffect(() => {
+    if (user?.email) setValue("email", user.email);
+    if (user?.phone) setValue("phone", user.phone);
+    if (user?.name) setValue("name", user.name);
+  }, [setValue, user]);
+
+  useEffect(() => {
+    if (data && !data.ok && data.error) {
+      setError("formErrors", { message: data.error });
+    }
+  }, [data, setError]);
   return (
     <Layout canGoBack title="Edit Profile">
       <form onSubmit={handleSubmit(onValid)} className="space-y-4 py-10 px-4">
@@ -50,6 +70,13 @@ const EditProfile: NextPage = () => {
             />
           </label>
         </div>
+        <Input
+          register={register("name")}
+          required={false}
+          label="Name"
+          name="name"
+          type="text"
+        />
         <Input
           register={register("email")}
           required={false}
@@ -70,7 +97,7 @@ const EditProfile: NextPage = () => {
             {errors.formErrors.message}
           </span>
         ) : null}
-        <Button text="Update profile" />
+        <Button text={loading ? "Loading" : "Update profile"} />
       </form>
     </Layout>
   );
