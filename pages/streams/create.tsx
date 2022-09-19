@@ -1,4 +1,5 @@
 import useMutation from "@libs/client/useMutation";
+import { Stream } from "@prisma/client";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -16,7 +17,7 @@ interface CreateForm {
 
 interface CreateResponse {
   ok: boolean;
-  live: Stream;
+  stream: Stream;
 }
 
 const Create: NextPage = () => {
@@ -32,12 +33,12 @@ const Create: NextPage = () => {
     if (data && data.ok) {
       router.push(`/stream/${data.stream.id}`);
     }
-  }, [data]);
+  }, [data, router]);
   return (
     <Layout canGoBack title="Go Live">
       <form onSubmit={handleSubmit(onValid)} className=" space-y-4 py-10 px-4">
         <Input
-          register={register("name", { required: true })}
+          register={register("name", { required: true, valueAsNumber: true })}
           required
           label="Name"
           name="name"
