@@ -1,21 +1,38 @@
 import { Stream } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
-import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
+import { useInfiniteScroll } from "@libs/client/useInfiniteScroll";
 import FloatingButton from "../../components/floating-button";
 import Layout from "../../components/layout";
+import { useEffect } from "react";
 
 interface StreamsResponse {
   ok: boolean;
   streams: Stream[];
+  pages: number;
 }
 
+const getKey = (pageIndex: number, previousPageData: StreamsResponse) => {
+  if (pageIndex === 0) return `/api/streams?page=1`;
+  if (pageIndex + 1 > previousPageData.pages) return null;
+  return `/api/streams?page=${pageIndex + 1}`;
+};
+
 const Streams: NextPage = () => {
-  const { data } = useSWR<StreamsResponse>(`/api/streams`);
+  const { data, setSize } = useSWRInfinite<StreamsResponse>(getKey);
+
+  const page = useInfiniteScroll();
+  useEffect(() => {
+    setSize(page);
+  }, [setSize, page]);
+
+  const streams = data ? data.map((item) => item.streams).flat() : [];
+
   return (
     <Layout hasTabBar title="라이브 방송">
       <div className="space-y-5 divide-y-2 py-10 ">
-        {data?.streams.map((stream) => (
+        {streams.map((stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>
             <a className="block px-4  pt-4">
               <div className="aspect-video w-full rounded-md bg-slate-300 shadow-sm" />
@@ -26,7 +43,6 @@ const Streams: NextPage = () => {
           </Link>
         ))}
         <FloatingButton href="/streams/create">
-          {" "}
           <svg
             className="h-6 w-6"
             fill="none"

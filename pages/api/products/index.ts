@@ -1,6 +1,6 @@
-import client from "@libs/server/client";
-import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
+import withHandler, { ResponseType } from "@libs/server/withHandler";
+import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
 
 async function handler(
@@ -8,18 +8,30 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "GET") {
+    const {
+      query: { page },
+    } = req;
+    const productCount = await client.product.count();
     const products = await client.product.findMany({
       include: {
-        _count: {
+        records: {
+          where: {
+            kind: "Fav",
+          },
           select: {
-            favs: true,
+            createdAt: true,
+            updatedAt: true,
+            kind: true,
           },
         },
       },
+      take: 10,
+      skip: (+page - 1) * 10,
     });
     res.json({
       ok: true,
       products,
+      pages: Math.ceil(productCount / 10),
     });
   }
   if (req.method === "POST") {
@@ -40,7 +52,6 @@ async function handler(
         },
       },
     });
-
     res.json({
       ok: true,
       product,
@@ -49,5 +60,8 @@ async function handler(
 }
 
 export default withApiSession(
-  withHandler({ methods: ["GET", "POST"], handler, isPrivate: true })
+  withHandler({
+    methods: ["GET", "POST"],
+    handler,
+  })
 );
