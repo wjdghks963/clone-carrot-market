@@ -439,6 +439,8 @@ super_cache = {
 };
 ```
 
+`useSWR`에는 다양한 옵션이 존재하는데 refreshInterval만 본다면 우선 이름과 같이 패칭 refresh를 Interval로 해준다는 뜻으로 값은 초단위로 넣으면 된다.
+
 2. hook 안의 결과값에는 data 와 mutate가 있다.
 
 https://swr.vercel.app/ko/docs/mutation
