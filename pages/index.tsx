@@ -39,11 +39,11 @@ const Home: NextPage = () => {
       <div className="flex flex-col space-y-5 divide-y">
         {products?.map((product) => (
           <Item
-            id={product.id}
-            key={product.id}
-            title={product.name}
-            price={product.price}
-            hearts={product._count.favs}
+            id={product?.id}
+            key={product?.id}
+            title={product?.name}
+            price={product?.price}
+            hearts={product?._count.favs}
           />
         ))}
         <FloatingButton href="/products/upload">

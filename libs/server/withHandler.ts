@@ -25,7 +25,7 @@ export default function withHandler({
       return res.status(405).end();
     }
 
-    if (isPrivate && req.session.user) {
+    if (isPrivate && !req.session.user) {
       res.status(401).json({ ok: false, error: "please login" });
     }
     // 받아온 함수 try catch 처리

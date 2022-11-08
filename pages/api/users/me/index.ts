@@ -23,6 +23,7 @@ async function handler(
       session: { user },
       body: { email, phone, name },
     } = req;
+
     const currentUser = await client.user.findUnique({
       where: {
         id: user?.id,
@@ -87,5 +88,5 @@ async function handler(
 }
 
 export default withApiSession(
-  withHandler({ methods: ["GET", "POST"], handler, isPrivate: true })
+  withHandler({ methods: ["GET", "POST"], handler })
 );
