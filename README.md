@@ -399,7 +399,12 @@ req.url.indclues("/enter");
 
 Next 앱의 로딩 시간을 최적화하는 방법
 
-일반적으로 바로 사용해야하는 컴포넌트 import 대신에 나중에 이벤트나 특정 상황에 따라 컴포넌트가 나오게 하는 경우 사용해 나중에 나오게 해 최적화한다.
+일반적으로 import해서 컴포넌트를 바로 사용하는게 아니라 이벤트나 특정 상황에 따라 컴포넌트를 나오게 해 다운로드하는 component를 줄인다.
+바로 JS를 UI에 포함시켜 다운 받게 하는 것이 아니라 나중에 다운로드 시켜서 최적화가 가능하다.
+
+```javascript
+const com = dynamic(() => import("components/com"), { ssr: false });
+```
 
 # auth 로직
 
