@@ -1,5 +1,7 @@
 # Carrot Market
 
+이 프로젝트는 Next.js 12.1 버전입니다.
+
 # Setup
 
 - 설치
@@ -376,6 +378,28 @@ remote image를 사용하기 위한 조건
 - next는 이미지 호스트의 도메인 이름을 next.config에 추가해야 된다.
 - width, height 나 layout 속성을 무조건 가져야한다.
 - placeholder="blur" 사용이 불가능하다.
+
+## MiddleWare
+
+미들웨어가 필요한 **pages**에 하나씩 미들웨어 파일을 추가해 사용할 수 있다.
+파일이름은 `_middleware.ts` 여야한다.
+미들웨어는 api를 GET, POST 할 때 둘다 된다.
+
+아래와 같은 req 안에 있는 속성들을 엄청 많고 이것들을 사용해 다양한 미들웨어 구현이 가능하다.
+
+```javascript
+// 쿠키에 저근하기 return 값은 boolean
+req.cookies.name;
+
+// url이 /enter 를 포함하고 있나
+req.url.indclues("/enter");
+```
+
+## Dynamic Imports
+
+Next 앱의 로딩 시간을 최적화하는 방법
+
+일반적으로 바로 사용해야하는 컴포넌트 import 대신에 나중에 이벤트나 특정 상황에 따라 컴포넌트가 나오게 하는 경우 사용해 나중에 나오게 해 최적화한다.
 
 # auth 로직
 

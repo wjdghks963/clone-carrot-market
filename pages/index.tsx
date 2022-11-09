@@ -7,6 +7,7 @@ import { Product } from "@prisma/client";
 import useUser from "@libs/client/useUser";
 import { useInfiniteScroll } from "@libs/client/useInfiniteScroll";
 import { useEffect } from "react";
+import Head from "next/head";
 
 export interface ProductWithCount extends Product {
   _count: { favs: number };
