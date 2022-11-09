@@ -34,12 +34,28 @@ const EditProfile: NextPage = () => {
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>(`/api/users/me`);
 
-  const onValid = ({ email, phone, name, avatar }: EditProfileForm) => {
+  const onValid = async ({ email, phone, name, avatar }: EditProfileForm) => {
     if (loading) return;
     if (email === "" && phone === "" && name === "") {
       setError("formErrors", {
         message: "이메일이나 핸드폰 중 하나가 꼭 필요합니다.",
       });
+    }
+    if (avatar && avatar.length > 0 && user) {
+      // cloudflare 에게 url 요청
+      const { uploadURL } = await (await fetch(`/api/files`)).json();
+      const form = new FormData();
+      form.append("file", avatar[0], user?.id + "");
+      const {
+        result: { id },
+      } = await (
+        await fetch(uploadURL, {
+          method: "POST",
+          body: form,
+        })
+      ).json();
+
+      editProfile({ email, phone, name, avatarId: id });
     }
     editProfile({ email, phone, name });
   };
@@ -48,6 +64,10 @@ const EditProfile: NextPage = () => {
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
     if (user?.name) setValue("name", user.name);
+    if (user?.avatar)
+      setAvatarPreview(
+        `https://imagedelivery.net/aSbksvJjax-AUC7qVnaC4A/${user?.avatar}/avatar`
+      );
   }, [setValue, user]);
 
   useEffect(() => {

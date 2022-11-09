@@ -36,6 +36,9 @@ const Home: NextPage = () => {
 
   return (
     <Layout title="홈" hasTabBar>
+      <Head>
+        <title>Home</title>
+      </Head>
       <div className="flex flex-col space-y-5 divide-y">
         {products?.map((product) => (
           <Item

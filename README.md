@@ -341,7 +341,9 @@ value나 html의 속성을 이용해서 validate를 설정하고 에러를 설�
 <input {..register("username", {required : "username required"})} type="text" />
 ```
 
-# Next.js의 API routes
+# Next.js
+
+## API routes
 
 page 폴더 안에 api라는 폴더를 생성하는 것으로 간단하게 파일 경로를 api로 만들 수 있다.
 
@@ -361,6 +363,19 @@ export default async function handler(
   res.json({ ok: true });
 }
 ```
+
+## Image
+
+next는 next/image 에서 Image 컴포넌트를 제공한다.
+이 컴포넌트는 HTML img 태그의 확장이다.
+여기에는 우수한 Core Web Vitals를 달성하는데 도움이 되는 다양한 기본 성능 최적화가 포함되어 있다.
+일반 img 태그와 다르게 next Image는 lazyloading을 자동적으로 사용하며 이미지 영역이 화면에 나타나면 Next가 이미지를 로드하기 시작한다.
+
+remote image를 사용하기 위한 조건
+
+- next는 이미지 호스트의 도메인 이름을 next.config에 추가해야 된다.
+- width, height 나 layout 속성을 무조건 가져야한다.
+- placeholder="blur" 사용이 불가능하다.
 
 # auth 로직
 
@@ -488,6 +503,39 @@ context SWRConfig는 모든 SWR hook에 대한 global configuration을 제공한
 ```
 
 <br/>
+
+# CloudFlare
+
+## Image Direct Creator Upload
+
+https://developers.cloudflare.com/images/cloudflare-images/upload-images/direct-creator-upload/
+
+유저의 브라우저가 cloudflare에 다이렉트로 업로드할 수 있다.
+Cloudflare 이미지의 Direct Creator Upload 기능을 사용하면 사용자가 일회성 업로드 URL로 사진을 업로드할 수 있다.
+Direct Creator Upload를 사용하면 API 키 또는 토큰을 클라이언트에 노출하지 않고 업로드를 수락할 수 있다.
+또한 중간 스토리지 버킷 및 이와 관련된 스토리지/송신 비용이 필요하지 않다.
+
+- 로직
+
+아래와 같은 로직은 전송 대역폭을 2번을 사용하기 때문에 돈이 많이 든다.
+File(browser) => My Server => CloudFlare
+
+따라서 밑과 같은 로직을 사용하기 위해 DCU를 사용한다.
+File(browser) => CloudFlare
+
+위와 같은 로직은 다음과 같다.
+유저는 우리에게 이미지를 넣을 수 있는 cloudflare url을 요구할 것이고 그럼 우리는 cloudflare에게 url을 요구해 url을 받을 것이다. 그 후 그 url에 유저가 직접 파일을 업로드 할 수 있도록 할 것이다.
+업로드는 프론트엔드에서 이루어진다.
+
+### Image variant
+
+cloudflare dashboard에서 변수 설정이 20개까지 가능하다.
+기본값은 public이며 variant 이름을 설정하고 안에 이미지의 Width, Height, Fit, meata와 같은 옵션들을 설정이 가능하다.
+
+ex)
+variant 이름을 avatar이라고 하고 대시보드에서 W, H를 설정하고 image를 받아오는 variant 자리에 설정한 이름을 넣으면 해당하는 옵션으로 이미지를 바꿔서 준다.
+
+<br>
 
 # 짧은 tips
 
