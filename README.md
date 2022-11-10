@@ -398,6 +398,7 @@ req.url.indclues("/enter");
 ## Dynamic Imports
 
 Next 앱의 로딩 시간을 최적화하는 방법
+_dynamic 컴포넌트의 핵심은 앱을 작게 나눠 필요에 따라 그 컴포넌트를 불러오는 것이다._
 
 일반적으로 import해서 컴포넌트를 바로 사용하는게 아니라 이벤트나 특정 상황에 따라 컴포넌트를 나오게 해 다운로드하는 component를 줄인다.
 바로 JS를 UI에 포함시켜 다운 받게 하는 것이 아니라 나중에 다운로드 시켜서 최적화가 가능하다.
@@ -405,6 +406,85 @@ Next 앱의 로딩 시간을 최적화하는 방법
 ```javascript
 const com = dynamic(() => import("components/com"), { ssr: false });
 ```
+
+_그럼 만약 dynamic으로 불러오는 파일의 크기가 너무 크다면 어떨까?_
+
+그러면 안되지만 만약 큰 컴포넌트를 꼭 써야하는 상황이 온다면 다음과 같이 loader를 사용한다.
+
+```javascript
+const big = dynamic(() => import("components/com"), {
+  ssr: false,
+  loading: () => <span>Loading...</span>,
+});
+```
+
+## \_document and fonts
+
+`_app`은 앱 전체의 청사진과 같다.
+
+`_document`도 마찬가지로 앱의 청사진과 같다.
+next/documnet의 Documnet로 부터 class 상속을 받아 만들어지는 class형 컴포넌트이며 서버에서 한 번만 실행된다.
+
+### Script Component
+
+Next.js Script 컴포넌트인 next/script는 HTML script 태그의 확장
+이를 통해 개발자는 애플리케이션에서 써드 파티 스크립트의 로드되는 우선 순위를 설정할 수 있으므로 개발자 시간을 절약하면서 로드하는 성능을 향상시킬 수 있다.
+
+이 컴포넌트에는 속성이 존재한다.
+
+1. strategy
+   beforeInteractive: 페이지가 interactive 되기 전에 로드
+   afterInteractive: (기본값) 페이지가 interactive 된 후에 로드
+   lazyOnload: 다른 모든 데이터나 소스를 불러온 후에 로드
+   worker: (실험적인) web worker에 로드
+
+```javascript
+<Script src="~" strategy="lazyOnLoad" />
+```
+
+2. onLoad
+   만약 script가 불러져왔다면 실행할 함수
+
+```javascript
+<Script src="~" onLoad={() => console.log("done")} />
+```
+
+## getServerSideProps
+
+이 함수는 서버단에서만 호춣되고 페이지 컴포넌트가 서버단에서 실행된다.
+서버에서 페이지에 필요한 데이터 값들을 가지고 올 때까지 기다렸다가 페이지가 렌더링되기 때문에 SWR과 같이 사용이 불가능하다.
+
+_따라서 static optimization, cache 같은 기능을 사용할 수 없다._
+
+### 그럼 캐시 데이터를 미리 제공해서 둘 다 사용해 보자
+
+SWRConfig 컴포넌트는 fallback이라는 속성으로 캐시 초기값을 설정할 수 있다.
+
+```javascript
+// 안에 useSWR로 데이터를 받아오고 있음
+const Home: NextPage = () =>{...}
+
+const Page: NextPage<{products:ProductsWithCount[]}>= ({products}) => {
+   return (
+      <SWRConfig value={{
+         fallback:{
+            "/api/home" :{ ok:true, products}
+         }
+      }}>
+      <Home/>
+      </SWRConfig>
+   )
+}
+
+export ssr fun ~~~
+
+// wrapping 한 페이지를 export
+export default Page
+```
+
+위의 상황은 다음과 같다.
+
+서버사이드 렌더링을 이용해서 데이터를 받아오지만 SWR을 이용해서 캐시를 설정해 주며 CSR도 동시에 사용이 가능하다.
 
 # auth 로직
 
