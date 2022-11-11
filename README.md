@@ -420,9 +420,9 @@ const big = dynamic(() => import("components/com"), {
 
 ## \_document and fonts
 
-`_app`은 앱 전체의 청사진과 같다.
+`_app`은 앱 전체의 청사진과 같다. 서버로 요청이 들어왔을 때 가장 먼저 실행되는 컴포넌트
 
-`_document`도 마찬가지로 앱의 청사진과 같다.
+`_document`도 마찬가지로 앱의 청사진과 같다. 하지만 이것은 app 다음에 언제나 서버에서 실행된다.
 next/documnet의 Documnet로 부터 class 상속을 받아 만들어지는 class형 컴포넌트이며 서버에서 한 번만 실행된다.
 
 ### Script Component
@@ -481,8 +481,6 @@ export ssr fun ~~~
 // wrapping 한 페이지를 export
 export default Page
 ```
-
-위의 상황은 다음과 같다.
 
 서버사이드 렌더링을 이용해서 데이터를 받아오지만 SWR을 이용해서 캐시를 설정해 주며 CSR도 동시에 사용이 가능하다.
 
