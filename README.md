@@ -544,6 +544,70 @@ fallback 화면 > 페이지 반환
 
 1. true일 때와 비슷하게 동작하지만 최초 만들어 놓지 않은 path에 대한 요청이 들어온 경우 fallback 상태를 보여주지 않고 SSR처럼 동작한다.
 
+**fallback이 렌더링되고 있는지 next의 router를 통해 값을 페이지에서 알 수 있다.**
+
+```javascript
+const router = useRouter();
+router.isFallback; // fallback이 렌더링되고 있다면 true
+```
+
+## ISR
+
+getStaticProps, getServerSideProps 경우 유저쪽에서 로딩을 기다리는 일이 없다.
+
+하지만 만약 서버에서 처리하는 것들이 많이 html을 만들 때까지 시간이 오래 걸린다면 유저는 로딩은 아니지만 멈춰있는 화면을 그냥 기다려야한다는 단점이 있다.
+ssg는 fallback이 false가 아닌경우..
+
+ISR은 getStaticProps를 백그라운드에서 여러 번 실행이 가능하게 한다.
+
+```javascript
+export async function getStaticProps() {
+  const res = await fetch("https://.../posts");
+  const posts = await res.json();
+
+  return {
+    props: {
+      posts,
+    },
+    revalidate: 10,
+  };
+}
+```
+
+getStaticProps에서 revalidate를 속성을 정의한다면 **(해당 값)초 마다 페이지를 재생성한다.**
+
+따라서 로딩이나 멈춰있는 화면을 기다릴 필요없이 가장 최신 데이터를 볼 수 있다.
+
+### 그럼 revalidate가 뭔가
+
+revalidate를 20이라고 가정하고 예를 들어본다.
+A, B, C, D 라는 유저가 웹에 도착해서 해당 페이지를 본다.
+
+**맨 처음 버젼을 본다**
+A --> V1
+**20초 후 유저가 들어온다면 백그라운드에서 V를 재생성한다. (V2의 트리거)**
+B --(20초)-> V1 (V2)
+**20초 이후 온 유저는 V2를 본다**
+C --(21)-> V2
+**40초 후 유저가 들어온다면 백그라운드에서 V3를 재생성한다. (V3의 트리거)**
+D --(40)-> V2 (V3)
+
+### ODR On-demand Revalidation
+
+revalidate를 통해 새로운 데이터를 받을 수 있는 방법(원래 있던 캐시를 삭제하는 방법)은 revalidate 설정 시간이 끝나고 유저가 그 페이지를 방문하는 방법밖에 없었다.
+
+ODR은 수동으로 캐시를 삭제하기 위한 방법을 제공한다.
+getStaticProps에서 API handler를 이용할 수 있다.
+하지만 middleware는 사용할 수 없다.
+
+사용 방법
+
+사용이 필요한 api에서 사용한다.
+
+```javascript
+await res.revalidate("api url");
+```
+
 # auth 로직
 
 1. enter에서 payload 및 payload가 담긴 token 생성 후 계정에 연결
