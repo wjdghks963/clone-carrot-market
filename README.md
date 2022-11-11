@@ -451,7 +451,9 @@ Next.js Script 컴포넌트인 next/script는 HTML script 태그의 확장
 
 ## getServerSideProps
 
-이 함수는 서버단에서만 호춣되고 페이지 컴포넌트가 서버단에서 실행된다.
+이 함수는 서버단에서만 호출되고 페이지 컴포넌트가 서버단에서 실행된다.
+유저의 요청이 발생할 때마다 실행된다.
+
 서버에서 페이지에 필요한 데이터 값들을 가지고 올 때까지 기다렸다가 페이지가 렌더링되기 때문에 SWR과 같이 사용이 불가능하다.
 
 _따라서 static optimization, cache 같은 기능을 사용할 수 없다._
@@ -483,6 +485,64 @@ export default Page
 ```
 
 서버사이드 렌더링을 이용해서 데이터를 받아오지만 SWR을 이용해서 캐시를 설정해 주며 CSR도 동시에 사용이 가능하다.
+
+## getStaticProps (SSG)
+
+해당 함수가 있는 페이지가 빌드되고 next가 이 페이지를 export 한 후 일반 html로 될 때 실행된다.
+
+### 정적인 라우트
+
+앱 안에 있는 파일들을 정적으로 html로 만들기 때문에 node의 read를 사용해서 프로젝트 안에 있는 파일들을 읽어서 정보를 받아온다.
+
+```javascript
+export async function getStaticProps() {
+  const posts = readdirSync("./posts").map((file) => {
+    return readFileSync(`./posts/${file}`, "utf-8");
+  });
+  return {
+    props: { posts },
+  };
+}
+```
+
+### 동적인 라우트 (getStaticPaths 사용)
+
+동적인 라우트를 갖는 페이지에서 getStaticProps를 사용할 때 꼭 필요하다.
+
+동적 경로를 사용하는 페이지에서 getStaticPaths 함수를 export할 때 Next는 getStaticPaths에 의해 지정된 모든 경로를 정적으로 미리 렌더링한다.
+
+```javascript
+export async function getStaticPaths() {
+  const res = await AllPostId();
+
+  const paths = res?.map((post: any) => ({
+    params: {
+      id: post.id.toString(),
+    },
+  }));
+  return { paths, fallback: "blocking" };
+}
+```
+
+fallback의 값에 따라 getStaticPaths에서 리턴하지 않은 페이지 접속 시 return 되는 상황이 다르다.
+
+**"false"**
+모두 404로 연결
+
+**"true"**
+
+fallback 화면 > 페이지 반환
+
+1. 404 반환하지 않고 getStaticProps 함수를 이용한 값으로 HTML파일과 JSON파일을 만들어낸다.
+
+2. 백그라운드에서 작업이 끝나면 요청된 path에 해당하는 JSON 파일을 받아 새롭게 페이지를 렌더링함
+
+3. 새롭게 생성된 페이지를 기존 빌드시 프리렌더링된 페이지 리스트에 추가.
+   같은 path로 온 이후 요청들에 대해서는 처음 생성한 페이지를 반환함
+
+**"blocking"**
+
+1. true일 때와 비슷하게 동작하지만 최초 만들어 놓지 않은 path에 대한 요청이 들어온 경우 fallback 상태를 보여주지 않고 SSR처럼 동작한다.
 
 # auth 로직
 
